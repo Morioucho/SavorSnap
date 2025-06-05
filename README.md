@@ -57,7 +57,7 @@ The Springboot layer is responsible for persisting data and managing the API for
 The Springboot layer is also responsible for managing User data and setting up the APIs. User data is persisted into the PostgreSQL, and in simplified terms, is contained in this POJO (Plain Old Java Object).
 
 > [!IMPORTANT]
-> This class below is just a mockup, in reality, user information, such as passwords and allergies, is encrypted using AES.
+> This class below is just a mockup, in reality, user information, such as passwords and allergies, is encrypted using BCryptPasswordManager.
 
 ```java
 // MOCKUP
@@ -89,7 +89,7 @@ Tensorflow is used to create the AI model that is used for analyzing inputted im
 We use algorithms such as morphological image processing in order to save computing power and generate more accurate results.
 
 ## Licensing
-This project is licensed under the **GPU GPL v3** license. You can read this license [here](LICENSE).
+This project is licensed under the **GNU GPL v3** license. You can read this license [here](LICENSE).
 
 ## Credits
 SavorSnap is developed by Saumil Sharma, Kason Lai, Ceazar Jensen Opaon, and Christian Hsu.
