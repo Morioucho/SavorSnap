@@ -31,6 +31,8 @@ public class UserService {
         user.setEmail(request.email());
         user.setRole("USER");
 
+        userRepository.save(user);
+
         return Optional.of(user);
     }
 
