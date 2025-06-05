@@ -7,6 +7,7 @@ import com.morioucho.savorsnap.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -62,8 +63,14 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession(false).invalidate();
-        return ResponseEntity.ok("Logged out successfully");
+        HttpSession session = request.getSession(false);
+
+        if(session != null) {
+            session.invalidate();
+            return ResponseEntity.ok("Logged out successfully");
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No active session to log out from.");
     }
 
     @GetMapping("/me")
