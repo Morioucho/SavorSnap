@@ -28,7 +28,7 @@ public class SavorUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AppUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    log.warn("Failed to find user with username: " + username);
+                    log.warn("Failed to find user with username: {}", username);
 
                     return new UsernameNotFoundException("User not found");
                 });

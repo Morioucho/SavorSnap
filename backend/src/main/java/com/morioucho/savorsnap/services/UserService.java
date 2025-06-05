@@ -50,9 +50,7 @@ public class UserService {
 
         // Check if username is taken.
         if(findByUsername(username).isPresent()) {
-            log.warn(String.format(
-                "Username '%s' is already taken.",
-                username));
+            log.warn("Username {} is already taken.", username);
             return false;
         }
 
@@ -66,7 +64,7 @@ public class UserService {
 
         // Improper username length.
         if(username.length() < 5) {
-            log.warn("Username must be at least 5 characters long.");
+            log.warn("Username ({}) must be at least 5 characters long.", username);
             return false;
         }
 
@@ -77,8 +75,10 @@ public class UserService {
         }
 
         if(!email.contains("@") || !email.contains(".")) {
-            log.warn("Email must contain '@' and '.' characters.");
+            log.warn("Email ({}) must contain '@' and '.' characters.", email);
             return false;
         }
+
+        return true;
     }
 }
