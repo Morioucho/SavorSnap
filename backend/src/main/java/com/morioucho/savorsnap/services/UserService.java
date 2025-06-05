@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -21,7 +24,7 @@ public class UserService {
 
     public Optional<AppUser> registerUser(RegisterRequest request) throws Exception {
         if(!verifyUser(request)) {
-            throw new Exception();
+            throw new Exception("Invalid username, password, or email.");
         }
 
         AppUser user = new AppUser();
@@ -30,6 +33,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(request.password()));
         user.setEmail(request.email());
         user.setRole("USER");
+
+        userRepository.save(user);
 
         return Optional.of(user);
     }
@@ -45,6 +50,7 @@ public class UserService {
 
         // Check if username is taken.
         if(findByUsername(username).isPresent()) {
+            log.warn("Username {} is already taken.", username);
             return false;
         }
 
@@ -52,19 +58,27 @@ public class UserService {
         if(username.isBlank() ||
            password.isBlank() ||
            email.isBlank()) {
+            log.warn("Username, password, or email is blank.");
             return false;
         }
 
         // Improper username length.
         if(username.length() < 5) {
+            log.warn("Username ({}) must be at least 5 characters long.", username);
             return false;
         }
 
         // Improper password length.
         if(password.length() < 8) {
+            log.warn("Password must be at least 8 characters long.");
             return false;
         }
 
-        return email.contains("@") && email.contains(".");
+        if(!email.contains("@") || !email.contains(".")) {
+            log.warn("Email ({}) must contain '@' and '.' characters.", email);
+            return false;
+        }
+
+        return true;
     }
 }
